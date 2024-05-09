@@ -3,6 +3,7 @@ import Results from "@/segments/results";
 import { ImageDataType } from "@/types";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import NoResults from "@/segments/no-results";
 
 export const Route = createLazyFileRoute("/")({
   component: Index,
@@ -15,7 +16,7 @@ function Index() {
     <>
       <SearchForm setResults={setResults} />
       <div className="h-[1px] bg-foreground/30 mx-4 my-2"></div>
-      {results.length === 0 ? <></> : <Results results={results} />}
+      {results.length === 0 ? <NoResults /> : <Results results={results} />}
     </>
   );
 }
