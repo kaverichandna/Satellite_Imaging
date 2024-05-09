@@ -3,7 +3,7 @@ const GridItem = ({
   thumbnail,
   count,
 }: {
-  date: Date;
+  date: string;
   thumbnail: string;
   count: number;
 }) => {
@@ -15,7 +15,8 @@ const GridItem = ({
         className="w-full h-full object-cover"
       />
       <div className="absolute bottom-0 left-0 right-0 text-center text-white bg-black/60 font-semibold font-mono">
-        {date.toLocaleDateString()}
+        {date}
+        {/* {new Date(date).toLocaleDateString()} */}
       </div>
       <div
         className={`absolute text-center rounded-md right-2 top-2 text-white aspect-square p-1 size-6 text-xs ${count === 0 ? "bg-destructive" : "bg-sky-700"}`}
