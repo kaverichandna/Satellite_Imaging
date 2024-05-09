@@ -1,10 +1,17 @@
 import { useState } from "react";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
-import { DatePicker } from "./date-picker";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { DatePicker } from "@/components/date-picker";
 import { DateRange } from "react-day-picker";
+import { ImageDataType } from "@/types";
 
-const SearchForm = () => {
+const SearchForm = ({
+  setResults,
+}: {
+  setResults: React.Dispatch<React.SetStateAction<ImageDataType[]>>;
+}) => {
+  const [loading, setLoading] = useState(false);
+
   const [coordinates, setCoordinates] = useState<{
     latitude: string;
     longitude: string;
@@ -17,6 +24,22 @@ const SearchForm = () => {
     from: undefined,
     to: undefined,
   });
+
+  function validateCoordinate(coordinate: string) {
+    return !/^[0-9].*\.[0-9].*$/.test(coordinate);
+  }
+
+  function submitInfo() {
+    setLoading(true);
+    const params = `?lat=${coordinates.latitude}&lon=${coordinates.longitude}&from=${date?.from?.getTime()}&to=${date?.to?.getTime()}`;
+    console.log(params);
+    // TODO: Check if the data back from the server is actually of the type
+    // TODO: Add error handling
+    fetch("/images.json")
+      .then((response) => response.json())
+      .then((data) => setResults(data));
+    setLoading(false);
+  }
 
   return (
     <div className="p-2 space-y-2">
@@ -38,9 +61,11 @@ const SearchForm = () => {
       </div>
       <DatePicker date={date} setDate={setDate} />
       <Button
+        onClick={submitInfo}
         disabled={
-          coordinates.longitude.length === 0 ||
-          coordinates.latitude.length === 0 ||
+          loading ||
+          validateCoordinate(coordinates.longitude) ||
+          validateCoordinate(coordinates.latitude) ||
           date?.from === undefined
         }
         variant={"secondary"}

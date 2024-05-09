@@ -13,7 +13,7 @@ function Index() {
 
   return (
     <>
-      <SearchForm />
+      <SearchForm setResults={setResults} />
       <div className="h-[1px] bg-foreground/30 mx-4 my-2"></div>
       {results.length === 0 ? <></> : <Results results={results} />}
     </>
