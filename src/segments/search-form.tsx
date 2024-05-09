@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { DatePicker } from "@/date-picker";
+import { DatePicker } from "./date-picker";
 import { DateRange } from "react-day-picker";
 
 const SearchForm = () => {

@@ -1,14 +1,5 @@
-import GridItem from "./components/grid-item";
-
-export type ImageDataType = {
-  latitude: string;
-  longitude: string;
-  date: Date;
-  coordinates: { x: number; y: number; width: number; height: number }[];
-  thumbnailUrl: string;
-  viewUrl: string;
-  originalUrl: string;
-};
+import GridItem from "@/components/grid-item";
+import { ImageDataType } from "@/types";
 
 const Results = ({ results }: { results: ImageDataType[] }) => {
   return (
