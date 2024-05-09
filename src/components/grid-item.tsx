@@ -1,14 +1,21 @@
+import { Link } from "@tanstack/react-router";
+
 const GridItem = ({
+  id,
   date,
   thumbnail,
   count,
 }: {
+  id: number;
   date: string;
   thumbnail: string;
   count: number;
 }) => {
   return (
-    <div className="aspect-square relative rounded-md overflow-clip hover:cursor-pointer hover:scale-105 duration-200">
+    <Link
+      to={`/${id}`}
+      className="aspect-square relative rounded-md overflow-clip hover:cursor-pointer hover:scale-105 duration-200"
+    >
       <img
         src={thumbnail}
         alt="Satellite"
@@ -23,7 +30,7 @@ const GridItem = ({
       >
         {count}
       </div>
-    </div>
+    </Link>
   );
 };
 

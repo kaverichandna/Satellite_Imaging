@@ -1,4 +1,5 @@
 export type ImageDataType = {
+  id: number;
   latitude: string;
   longitude: string;
   date: string;

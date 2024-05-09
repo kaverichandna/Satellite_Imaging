@@ -10,6 +10,8 @@ const Results = ({ results }: { results: ImageDataType[] }) => {
       <div className="grid grid-cols-4 gap-2">
         {results.map((result) => (
           <GridItem
+            key={result.id}
+            id={result.id}
             thumbnail={result.thumbnailUrl}
             date={result.date}
             count={result.coordinates.length}
