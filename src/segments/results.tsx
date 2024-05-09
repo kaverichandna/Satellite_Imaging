@@ -7,7 +7,7 @@ const Results = ({ results }: { results: ImageDataType[] }) => {
       <h2 className="text-xl uppercase font-mono font-bold tracking-wider mb-2">
         Results
       </h2>
-      <div className="grid grid-cols-4 gap-2">
+      <div className="grid grid-cols-2 xl:grid-cols-8 sm:grid-cols-4 gap-2">
         {results.map((result) => (
           <GridItem
             key={result.id}
