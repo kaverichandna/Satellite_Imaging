@@ -1,4 +1,5 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
+import axios from "axios";
 
 import {
   Table,
@@ -9,6 +10,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useEffect, useState } from "react";
+import { ImageDataType } from "@/types";
 
 export const Route = createLazyFileRoute("/$imageId")({
   component: ImagePage,
@@ -16,25 +19,37 @@ export const Route = createLazyFileRoute("/$imageId")({
 
 function ImagePage() {
   const { imageId } = Route.useParams();
+  const [spillData, setSpillData] = useState<ImageDataType | undefined>(
+    undefined,
+  );
+
+  useEffect(() => {
+    axios.get(`/api/${imageId}`).then((res) => {
+      setSpillData(res.data);
+    });
+  }, []);
+
+  if (!spillData) return <>Loading Data ...</>;
+
   return (
     <div className="p-4">
       <h2 className="text-2xl uppercase font-mono font-bold mb-2">
         Image Details <span className="opacity-50">#{imageId}</span>
       </h2>
-      <div className="relative text-white">
-        <img
-          className="w-full"
-          src="https://images.unsplash.com/photo-1441644599508-24ae08965c5c?q=80&w=1080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        />
-        <div
-          style={{ left: 300, top: 200, width: 50, height: 30 }}
-          className="absolute bg-red-500 border border-red-500 border-dashed bg-opacity-50"
-        ></div>
+      <div className="relative text-white overflow-hidden">
+        <img className="w-full" src={`/static/${spillData.viewUrl}`} />
+        {spillData.coordinates.map(({ x, y, width, height }) => (
+          <div
+            style={{ left: x, top: y, width: width, height: height }}
+            className="absolute bg-red-500 border border-red-500 border-dashed bg-opacity-50"
+          ></div>
+        ))}
 
         <div className="absolute bottom-0 left-0 px-2">
-          33.29323<span className="ml-4">92.84592</span>
+          {spillData.longitude}
+          <span className="ml-4">{spillData.latitude}</span>
         </div>
-        <div className="absolute bottom-0 right-0 px-2">23/04/2024</div>
+        <div className="absolute bottom-0 right-0 px-2">{spillData.date}</div>
       </div>
 
       <Table>
@@ -49,16 +64,18 @@ function ImagePage() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow>
-            <TableCell className="font-medium">1</TableCell>
-            <TableCell>300</TableCell>
-            <TableCell>200</TableCell>
-            <TableCell>50</TableCell>
-            <TableCell>30</TableCell>
-            <TableCell>
-              <div className="bg-red-500 size-2 rounded-full"></div>
-            </TableCell>
-          </TableRow>
+          {spillData.coordinates.map(({ x, y, width, height }) => (
+            <TableRow>
+              <TableCell className="font-medium">1</TableCell>
+              <TableCell>{x}</TableCell>
+              <TableCell>{y}</TableCell>
+              <TableCell>{width}</TableCell>
+              <TableCell>{height}</TableCell>
+              <TableCell>
+                <div className="bg-red-500 size-2 rounded-full"></div>
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </div>

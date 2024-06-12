@@ -17,7 +17,7 @@ const GridItem = ({
       className="aspect-square relative rounded-md overflow-clip hover:cursor-pointer hover:scale-105 duration-200"
     >
       <img
-        src={thumbnail}
+        src={"/static/" + thumbnail}
         alt="Satellite"
         className="w-full h-full object-cover"
       />

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { DatePicker } from "@/components/date-picker";
 import { DateRange } from "react-day-picker";
 import { ImageDataType } from "@/types";
+import axios from "axios";
 
 const SearchForm = ({
   setResults,
@@ -29,15 +30,31 @@ const SearchForm = ({
     return !/^[0-9].*\.[0-9].*$/.test(coordinate);
   }
 
-  function submitInfo() {
+  function formatDate(d: Date | undefined) {
+    if (d == undefined) d = new Date();
+
+    const yyyy = d.getFullYear();
+    const ms = d.getMonth() + 1;
+    const ds = d.getDate();
+    let dd = ds.toString();
+    let mm = ms.toString();
+
+    if (ds < 10) dd = "0" + ds.toString();
+    if (ms < 10) mm = "0" + ms.toString();
+
+    const formattedDate = dd + "-" + mm + "-" + yyyy;
+    return formattedDate;
+  }
+
+  async function submitInfo() {
     setLoading(true);
-    const params = `?lat=${coordinates.latitude}&lon=${coordinates.longitude}&from=${date?.from?.getTime()}&to=${date?.to?.getTime()}`;
-    console.log(params);
     // TODO: Check if the data back from the server is actually of the type
     // TODO: Add error handling
-    fetch("/images.json")
-      .then((response) => response.json())
-      .then((data) => setResults(data));
+    //
+
+    const params = `?lat=${coordinates.latitude}&lon=${coordinates.longitude}&from=${formatDate(date?.from)}&to=${formatDate(date?.to)}`;
+    const response = await axios.get(`/api${params}`);
+    setResults(response.data);
     setLoading(false);
   }
 
